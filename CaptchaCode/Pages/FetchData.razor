@@ -1,0 +1,193 @@
+﻿@page "/fetchdata"
+@inject NavigationManager Navigation
+@inject IJSRuntime JS
+@inject SampleAPI sampleApi
+
+<PageTitle>Weather forecast</PageTitle>
+
+@using CaptchaCode.Data
+@inject WeatherForecastService ForecastService
+
+@*<h1>Weather forecast</h1>*@
+
+<p>This component demonstrates fetching data from a service based on valid captcha.</p>
+
+@if (IsValidated)
+{
+    
+    @if (forecasts == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <div class="container">
+            <div class="form-row pb-5">
+
+                <div class="col-12">
+                    <h2 class="mb-3">Ticket Restrictions</h2>
+                </div>
+                <div class="col-12 pb-4">
+                    <div class="outer-page">
+                        <div class="row">
+                            <div class="col-7 ticket-restrictions-box">
+
+
+
+
+
+                                <h5 class="mb-3 text-trans-none">Anytime Day Single</h5>
+                                <!-- <h5 class="mb-1">London Kings Cross to York</h5>-->
+                                <h5>Conditions Summary</h5>
+                                <p>Travel any time of day.</p>
+                                <h5>DESCRIPTION</h5>
+                                <p>Flexible ticket with no time restrictions on when you can travel.</p>
+                                <h5>VALIDITY</h5>
+                                <p>Your journey must be on the date, or the day after the date, specified on the ticket.</p>
+                                <h5>BOOKING</h5>
+                                <p>Can be booked in advance or purchased on the day of travel.</p>
+                                <h5>REFUNDS</h5>
+                                <p>If you decide not to use your ticket to make all or part of your intended journey then you can apply for a refund from the My Account pages, or through Customer Support within 28 days of expiry of the ticket. A GBP 10.00 administration fee will apply and the amount of the refund will take into account any use you have made of the ticket and in some circumstances no refund will be paid.</p>
+                                <h5>AMENDING YOUR BOOKING</h5>
+                                <p>If you wish to travel on a date outside of the ticket validity period or change the Class of ticket, you will need to buy a new ticket and apply for a refund on your current ticket.</p>
+                                <h5>DISCOUNTS</h5>
+                                <p>Yes - normal railcard and child discounts available.</p>
+                                <h5>BREAK OF JOURNEY</h5>
+                                <p>You may start, break and resume, or end your journey at any intermediate station along the route of travel.</p>
+                                <h5>ADDITIONAL RESTRICTIONS</h5>
+                                <p>Mobile Tickets and etickets aren't valid for travel on London Underground. See our FAQs for more info.</p>
+                                <h5>CODE</h5>
+                                <p>SOS</p>
+                                <h5>ACCESSIBILITY</h5>
+                                <p>View information about wheelchair spaces and accessibility on board your train here www.nationalrail.co.uk/stations_destinations/formations-and-facilities.aspx. Find out how to book travel assistance here www.nationalrail.co.uk/stations_destinations/plan-assistance.aspx.</p>
+                                <h5 class="mb-1">Permitted Origins</h5>
+                                <p class="text-uppercase">London Underground Zone 1</p>
+                                <h5 class="mb-1">Permitted Destinations</h5>
+                                <p class="text-uppercase">York</p>
+                                <h5 class="mb-1">Fare Validity</h5>
+                                <p class="text-uppercase">From Tue, 02 Aug 2022, 00:00 to Thu, 04 Aug 2022, 04:30</p>
+                                <h5 class="mb-1">Route Restrictions</h5>
+                                <p class="text-uppercase">Travel is allowed via any permitted route.</p>
+
+
+                                <!--<div class="read-more-popup-height-inside">
+                                  <h5 class="mb-3 text-trans-none">Anytime Day Single</h5>
+                                  <h5>DESCRIPTION</h5>
+                                  <p>Flexible ticket with no time restrictions on when you can travel.</p>
+                                  <h5>Validity</h5>
+                                  <p>The outward portions of Anytime Returns are valid for five days including the date on the ticket. You must return within one calendar month of the outward travel date specified.</p>
+                                  <h5>Booking</h5>
+                                  <p>Can be booked in advance or purchased on the day of travel.</p>
+                                  <h5>REFUNDS</h5>
+                                  <p>If you decide not to use your ticket to make all or part of your intended journey then you can apply for a refund from the My Account pages, or through Customer Support within 28 days of expiry of the ticket. Please note, the outward portion cannot be refunded if the return portion has been used. Up to £10.00 administration fee will apply and the amount of the refund will take into account any use you have made of the ticket and in some circumstances no refund will be paid.</p>
+                                  <h5>AMENDING YOUR BOOKING</h5>
+                                  <p>If you wish to travel on a date outside of the ticket validity period or change the Class of ticket, you will need to buy a new ticket and apply for a refund on your current ticket. </p>
+                                </div>-->
+
+
+
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="section">
+        <ReCAPTCHA @ref="reCAPTCHAComponent" SiteKey="6Le7j7AUAAAAAORWIiHLTzHJtrQHOqC9d5GykoEl" OnSuccess="OnSuccess" OnExpired="OnExpired" />
+    </div>
+    <button @onclick="OnClickPost" disabled="@DisablePostButton">
+        POST
+    </button>
+}
+
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    public bool IsValidated { get; set; } = false;
+
+    private ReCAPTCHA reCAPTCHAComponent;
+
+    private bool ValidReCAPTCHA = false;
+
+    private bool ServerVerificatiing = false;
+
+    private bool DisablePostButton => !ValidReCAPTCHA || ServerVerificatiing;
+    protected override async Task OnInitializedAsync()
+    {
+
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+    }
+
+
+    private void OnSuccess()
+    {
+        ValidReCAPTCHA = true;
+    }
+
+    private void OnExpired()
+    {
+        ValidReCAPTCHA = false;
+    }
+
+    private async Task OnClickPost()
+    {
+        if (ValidReCAPTCHA)
+        {
+            var response = await reCAPTCHAComponent.GetResponseAsync();
+            try
+            {
+                ServerVerificatiing = true;
+                StateHasChanged();
+                if (!string.IsNullOrEmpty(response))
+                {
+                    //Navigation.NavigateTo("/valid");
+                    IsValidated = true;
+                    UpdateView();
+                }
+                else
+                {
+                    await JS.InvokeAsync<object>("alert", string.Join(", ", "ValidationFailed"));
+                    ServerVerificatiing = false;
+                    IsValidated = false;
+                    StateHasChanged();
+                    UpdateView();
+                }
+                //var result = await sampleApi.Post(response);
+                //if (result.Success)
+                //{
+                //    IsValidated = true;
+                //    //Navigation.NavigateTo("/valid");
+                //    UpdateView();
+                //}
+                //else
+                //{
+                //    await JS.InvokeAsync<object>("alert", string.Join(", ", result.ErrorCodes));
+                //    ServerVerificatiing = false;
+                //    IsValidated = false;
+                //    StateHasChanged();
+                //}
+            }
+            catch (HttpRequestException e)
+            {
+                await JS.InvokeAsync<object>("alert", e.Message);
+                ServerVerificatiing = false;
+                StateHasChanged();
+            }
+        }
+    }
+
+    private void UpdateView()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+}

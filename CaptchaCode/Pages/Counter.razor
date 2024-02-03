@@ -1,0 +1,18 @@
+﻿@page "/counter"
+@inject NavigationManager Navigator
+<PageTitle>Counter</PageTitle>
+
+@{
+    string url = $"{Navigator.BaseUri}fetchdata";
+}
+
+<a href="@url">Visit</a>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}

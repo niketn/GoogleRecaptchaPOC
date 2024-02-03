@@ -1,0 +1,8 @@
+D:\BlazorRail\CaptchaCode\CaptchaCode\obj\Release\net6.0\PubTmp\Out\CaptchaCode.exe
+D:\BlazorRail\CaptchaCode\CaptchaCode\obj\Release\net6.0\PubTmp\Out\appsettings.Development.json
+D:\BlazorRail\CaptchaCode\CaptchaCode\obj\Release\net6.0\PubTmp\Out\appsettings.json
+D:\BlazorRail\CaptchaCode\CaptchaCode\obj\Release\net6.0\PubTmp\Out\CaptchaCode.dll
+D:\BlazorRail\CaptchaCode\CaptchaCode\obj\Release\net6.0\PubTmp\Out\CaptchaCode.deps.json
+D:\BlazorRail\CaptchaCode\CaptchaCode\obj\Release\net6.0\PubTmp\Out\CaptchaCode.runtimeconfig.json
+D:\BlazorRail\CaptchaCode\CaptchaCode\obj\Release\net6.0\PubTmp\Out\CaptchaCode.pdb
+D:\BlazorRail\CaptchaCode\CaptchaCode\obj\Release\net6.0\PubTmp\Out\Newtonsoft.Json.dll

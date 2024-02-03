@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "VInNmfiFxwKtp1o4eE1ZMixfTvUNWf8EQmueY0iFukLE0Y/3jSr9gFMmIzOvsz/X3nZuWLbt1lCBS8MBi04D6Q==",
+  "success": true,
+  "projectFilePath": "D:\\BlazorRail\\CaptchaCode\\CaptchaCode\\CaptchaCode.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\NIKET\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
